@@ -5,7 +5,7 @@ const PORT = 3000 //itroduce env later on
 
 
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended:true }));
 
 app.use('/', baseRoutes)
 
