@@ -1,4 +1,5 @@
-import Product from "../models/product.model.js"
+import Product from "../models/product.model.js";
+import { v4 as uuidv4 } from 'uuid';
 function getAllProducts(req, res){
     const filters = req.query;
     let allProducts = []
@@ -25,8 +26,9 @@ function addProduct(req, res){
         if(!quantity) missingFields.push('quantity');
         return res.status(400).json({status: false, error: 'failure in adding the product', message:  `${missingFields.toString(',')} product fields needs to be sent`})
     }
+    const id = uuidv4();
     try{
-        Product.addProduct(name, parseFloat(price), description, parseInt(quantity));
+        Product.addProduct(id, name, parseFloat(price), description, parseInt(quantity));
     }
     catch(error){
         return res.status(500).json({status: false, error, message: 'something went wrong'})

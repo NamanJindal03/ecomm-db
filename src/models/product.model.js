@@ -1,5 +1,6 @@
 export default class Product{
-    constructor(name, price, rating, description, quantity, creatorId, userRatingCount){
+    constructor(id, name, price, rating, description, quantity, creatorId, userRatingCount){
+        this.id = id
         this.name = name;
         this.price = price;
         this.rating = rating;
@@ -22,14 +23,14 @@ export default class Product{
         })
         return filterteredProducts;
     }
-    static addProduct(name, price, description, quantity){
-        const newProduct = new Product(name, price, 0, description, quantity, 123145, 0);
+    static addProduct(id, name, price, description, quantity){
+        const newProduct = new Product(id, name, price, 0, description, quantity, 123145, 0);
         products.push(newProduct);
     }
 }
 let products = [
-    new Product('showpiece', 5, 0, 'beautiful', 10, 123145, 0),
-    new Product('showpiece', 200, 0, 'beautiful', 10, 123145, 0),
-    new Product('showpiece', 60, 0, 'beautiful', 10, 123145, 0),
-    new Product('showpiece', 70, 0, 'beautiful', 10, 123145, 0),
+    new Product("1", 'showpiece', 5, 0, 'beautiful', 10, 123145, 0),
+    new Product("2", 'showpiece', 200, 0, 'beautiful', 10, 123145, 0),
+    new Product("3",'showpiece', 60, 0, 'beautiful', 10, 123145, 0),
+    new Product("4", 'showpiece', 70, 0, 'beautiful', 10, 123145, 0),
 ]
