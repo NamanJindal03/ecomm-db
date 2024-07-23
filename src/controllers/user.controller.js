@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../models/user.model.js"
 import { v4 as uuidv4 } from 'uuid';
+const SECRET_CODE = 'iambatman'
 
 const saltRounds = 10;
 
@@ -30,7 +32,10 @@ async function signin(req, res){
     if(!isValidated){
         return res.status(400).json({status: false, message: 'either password or email is incorrect', error: 'either password or email is incorrect'})
     }
-    return res.status(200).json({status: true, data: 'login success', user: user});
+    //do jwt token signing
+    const token = await jwt.sign({id: user.id, email: user.email}, SECRET_CODE);
+    const userCopy = {...user, token}
+    return res.status(200).json({status: true, data: 'login success', user: userCopy});
 }
 
 function allUsers(req, res){

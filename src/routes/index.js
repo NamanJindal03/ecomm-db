@@ -1,11 +1,12 @@
 import express from 'express';
 import {getAllProducts, getProduct, addProduct} from '../controllers/product.controller.js'
 import { signup, signin, allUsers } from '../controllers/user.controller.js';
+import { auth } from '../middlewares/auth.js';
 const router =  express.Router()
 
 router.route('/product')
     .post(addProduct)
-    .get(getAllProducts)
+    .get(auth, getAllProducts)
 
 router.route('/product/:productId')
     .get(getProduct)
