@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js"
 import { v4 as uuidv4 } from 'uuid';
-const SECRET_CODE = 'iambatman'
+const SECRET_CODE = 'iambatman' //supposed to go in env -> currently present here
 
 const saltRounds = 10;
 
