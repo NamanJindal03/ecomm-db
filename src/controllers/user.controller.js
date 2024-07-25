@@ -32,8 +32,17 @@ async function signin(req, res){
     if(!isValidated){
         return res.status(400).json({status: false, message: 'either password or email is incorrect', error: 'either password or email is incorrect'})
     }
+    console.log(user.id);
     //do jwt token signing
     const token = await jwt.sign({id: user.id, email: user.email}, SECRET_CODE);
+    
+    //adding the token to the http only cookie
+    const cookieOptions = {
+        httpOnly: true
+    }
+    // if(process.env.NODE_ENV === 'PRODUCTION') cookieOptions.secure = true
+    res.cookie('jwt', token)
+
     const userCopy = {...user, token}
     return res.status(200).json({status: true, data: 'login success', user: userCopy});
 }

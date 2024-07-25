@@ -1,6 +1,8 @@
 import Product from "../models/product.model.js";
+import User from "../models/user.model.js";
 import { v4 as uuidv4 } from 'uuid';
 function getAllProducts(req, res){
+    console.log(req);
     const filters = req.query;
     let allProducts = []
     try{
@@ -17,6 +19,7 @@ function getProduct(){
 }
 
 function addProduct(req, res){
+    
     const {name, price, description, quantity} = req.body;
     if(!name || !price || !description || !quantity){
         let missingFields = [];
@@ -37,4 +40,20 @@ function addProduct(req, res){
 
 }
 
-export {getAllProducts, getProduct, addProduct}
+function rateProduct(req, res){
+    const userId = req?.user?.id;
+    const productId = req?.params?.productId;
+    const user = User.getUserById(userId);
+    if(!user){
+        return res.status(500).json({status: false, message: 'something went wrong'})
+    }
+    const {rating} = req.body;
+    if(!rating) 
+        return res.status(400).json({status: false, message: 'rating is compulsory'})
+
+    Product.addProductRating(productId, userId, rating)
+    return res.status(200).json({status: true, message: 'product rated succesfully'});
+
+}
+
+export {getAllProducts, getProduct, addProduct, rateProduct}

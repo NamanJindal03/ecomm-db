@@ -15,6 +15,13 @@ export default class User{
         })
         return user;
     }
+    static getUserById(id){
+        
+        const user = users.find((entry)=>{
+            return entry.id == id
+        })
+        return user;
+    }
     //TODO: only for dev - remove before pushing
     static getUsers(){
         return users

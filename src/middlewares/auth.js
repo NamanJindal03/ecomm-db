@@ -7,6 +7,7 @@ const auth = (req, res, next) => {
         const token = req.headers?.authorization?.split(' ')[1];
         try{
             const decodedToken = jwt.verify(token, 'iambatman'); //second thing is secret code
+            req.user = decodedToken;
             console.log(decodedToken);
         }
         catch(err){
@@ -16,7 +17,9 @@ const auth = (req, res, next) => {
         
         next();
     }
-    return res.status(401).json({status: false, error: 'Unauthorized', message:'tokem is needed'});
+    else{
+        return res.status(401).json({status: false, error: 'Unauthorized', message:'tokem is needed'});
+    }
 }
 
 export {auth}

@@ -1,5 +1,5 @@
 import express from 'express';
-import {getAllProducts, getProduct, addProduct} from '../controllers/product.controller.js'
+import {getAllProducts, getProduct, addProduct, rateProduct} from '../controllers/product.controller.js'
 import { signup, signin, allUsers } from '../controllers/user.controller.js';
 import { auth } from '../middlewares/auth.js';
 const router =  express.Router()
@@ -11,6 +11,9 @@ router.route('/product')
 router.route('/product/:productId')
     .get(getProduct)
 
+router.route('/product/:productId/rate')
+    .post(auth, rateProduct)
+
 router.route('/user/signup')
     .post(signup)
 
@@ -19,5 +22,7 @@ router.route('/user/signin')
 
 router.route('/user')
     .get(allUsers)
+
+
 
 export default router;
