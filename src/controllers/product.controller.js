@@ -1,9 +1,14 @@
 import Product from "../models/product.model.js";
 import User from "../models/user.model.js";
 import { v4 as uuidv4 } from 'uuid';
+import { logger } from "../middlewares/custom_logger.js";
+import { winstonLogger } from "../winston.logger.js";
 function getAllProducts(req, res){
     console.log(req);
     const filters = req.query;
+    logger(req.query);
+    winstonLogger.info('first timer!! go easy');
+    winstonLogger.error('rjrjogjewofe');
     let allProducts = []
     try{
         allProducts = Product.getAllProducts(filters);
