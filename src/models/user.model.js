@@ -1,12 +1,13 @@
 export default class User{
-    constructor(email, password, name, userId){
+    constructor(email, password, name, userId, role){
         this.id = userId
         this.name = name;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
-    static createUser(email, password, name, userId){
-        const user = new User(email, password, name, userId);
+    static createUser(email, password, name, userId, role){
+        const user = new User(email, password, name, userId, role);
         users.push(user);
     }
     static getUserByEmail(email){
@@ -16,7 +17,7 @@ export default class User{
         return user;
     }
     static getUserById(id){
-        
+
         const user = users.find((entry)=>{
             return entry.id == id
         })

@@ -1,25 +1,43 @@
 import jwt from 'jsonwebtoken';
 
-const auth = (req, res, next) => {
-    console.log(req.headers?.authorization?.split(' '));
-    console.log(req.headers?.authorization?.split(' ')[1]);
+const authGeneric = (req, res) => {
     if(req.headers?.authorization?.split(' ')[1]){
         const token = req.headers?.authorization?.split(' ')[1];
         try{
             const decodedToken = jwt.verify(token, 'iambatman'); //second thing is secret code
-            req.user = decodedToken;
-            console.log(decodedToken);
+            return decodedToken;
         }
         catch(err){
             console.log(err)
-            return res.status(401).json({status: false, error: 'Unauthorized'});
+            throw new Error("Unauthorized")
         }
-        
-        next();
     }
     else{
-        return res.status(401).json({status: false, error: 'Unauthorized', message:'tokem is needed'});
+        throw new Error("Unauthorized")
+    }
+}
+const auth = (req, res, next) => {
+    try{
+        const tokenData = authGeneric(req);
+        req.user = tokenData;
+        next();
+    }
+    catch(err){
+        return res.status(401).json({status: false, error: err.message});
+    }
+}
+const customerCheck = (req, res, next) => {
+    try{
+        const tokenData = authGeneric(req);
+        req.user = tokenData;
+        if(!tokenData.role || tokenData.role != 'customer'){
+            return res.status(401).json({status: false, error: 'Unauthorized'});
+        }
+        next();
+    }
+    catch(err){
+        return res.status(401).json({status: false, error: err.message});
     }
 }
 
-export {auth}
+export {auth, customerCheck}

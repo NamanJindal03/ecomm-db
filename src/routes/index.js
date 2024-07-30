@@ -1,7 +1,8 @@
 import express from 'express';
 import {getAllProducts, getProduct, addProduct, rateProduct} from '../controllers/product.controller.js'
 import { signup, signin, allUsers } from '../controllers/user.controller.js';
-import { auth } from '../middlewares/auth.js';
+import { placeOrder } from '../controllers/order.controller.js';
+import { auth, customerCheck } from '../middlewares/auth.js';
 const router =  express.Router()
 
 router.route('/product')
@@ -22,6 +23,9 @@ router.route('/user/signin')
 
 router.route('/user')
     .get(allUsers)
+
+router.route('/order/:productId')
+    .post(customerCheck, placeOrder)
 
 
 

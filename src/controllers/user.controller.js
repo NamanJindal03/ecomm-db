@@ -6,15 +6,20 @@ const SECRET_CODE = 'iambatman' //supposed to go in env -> currently present her
 
 const saltRounds = 10;
 
+const roleEnums = ['customer', 'seller', 'logistics']
+
 
 function signup(req, res){
-    const {name, email, password} = req.body;
+    const {name, email, password, role} = req.body;
     if(!name || !email || !password){
         return res.status(400).json({status: false, message: 'could not register user', error: 'required fiedls not presetn'})
     }
+    if(!roleEnums.includes(role)){
+        return res.status(400).json({status: false, message: 'could not register user', error: 'role is not correct'})
+    }
     const hash = bcrypt.hashSync(password, saltRounds);
     const userId = uuidv4();
-    User.createUser(email, hash, name, userId);
+    User.createUser(email, hash, name, userId, role);
     return res.status(201).json({status: true, message: 'user signed up succesfully'})
 }
 
@@ -34,7 +39,7 @@ async function signin(req, res){
     }
     console.log(user.id);
     //do jwt token signing
-    const token = await jwt.sign({id: user.id, email: user.email}, SECRET_CODE);
+    const token = await jwt.sign({id: user.id, email: user.email, role: user.role}, SECRET_CODE);
     
     //adding the token to the http only cookie
     const cookieOptions = {
