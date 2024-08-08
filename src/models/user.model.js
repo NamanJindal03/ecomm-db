@@ -1,3 +1,4 @@
+import { Db } from "../db.js";
 export default class User{
     constructor(email, password, name, userId, role){
         this.id = userId
@@ -6,8 +7,10 @@ export default class User{
         this.password = password;
         this.role = role;
     }
-    static createUser(email, password, name, userId, role){
+    static async createUser(email, password, name, userId, role){
+        const userCollection= Db().collection("user")
         const user = new User(email, password, name, userId, role);
+        await userCollection.insertOne(user)
         users.push(user);
     }
     static getUserByEmail(email){

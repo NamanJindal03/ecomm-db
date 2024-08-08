@@ -9,7 +9,7 @@ const saltRounds = 10;
 const roleEnums = ['customer', 'seller', 'logistics']
 
 
-function signup(req, res){
+async function signup(req, res){
     const {name, email, password, role} = req.body;
     if(!name || !email || !password){
         return res.status(400).json({status: false, message: 'could not register user', error: 'required fiedls not presetn'})
@@ -19,7 +19,7 @@ function signup(req, res){
     }
     const hash = bcrypt.hashSync(password, saltRounds);
     const userId = uuidv4();
-    User.createUser(email, hash, name, userId, role);
+    await User.createUser(email, hash, name, userId, role);
     return res.status(201).json({status: true, message: 'user signed up succesfully'})
 }
 
