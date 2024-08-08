@@ -18,8 +18,8 @@ async function signup(req, res){
         return res.status(400).json({status: false, message: 'could not register user', error: 'role is not correct'})
     }
     const hash = bcrypt.hashSync(password, saltRounds);
-    const userId = uuidv4();
-    await User.createUser(email, hash, name, userId, role);
+    // const userId = uuidv4();
+    await User.createUser(email, hash, name, role);
     return res.status(201).json({status: true, message: 'user signed up succesfully'})
 }
 
@@ -28,7 +28,7 @@ async function signin(req, res){
     if(!email || !password){
         return res.status(400).json({status: false, message: 'could not signin user', error: 'required fiedls not presetn'})
     }
-    const user = User.getUserByEmail(email);
+    const user = await User.getUserByEmail(email);
     if(!user){
         return res.status(400).json({status: false, message: 'either password or email is incorrect', error: 'either password or email is incorrect'})
     }
@@ -52,7 +52,9 @@ async function signin(req, res){
     return res.status(200).json({status: true, data: 'login success', user: userCopy});
 }
 
-function allUsers(req, res){
-    return res.status(200).json({data: User.getUsers()});
+async function allUsers(req, res){
+    const users = await User.getUsers();
+    console.log(users)
+    return res.status(200).json({data: users});
 }
 export {signup, signin, allUsers}
