@@ -13,6 +13,9 @@ export default class ProductController{
     async getAllProducts(req, res){
         // console.log(req);
         const filters = req.query;
+        if(filters.price && (filters.minPrice || filters.maxPrice)){
+            return res.status(400).json({status: false, error: 'minPrice, maxPrice cannot exist together with price filter', message: 'minPrice, maxPrice cannot exist together with price filter'})
+        }
         // logger(req.query);
         winstonLogger.info('first timer!! go easy');
         winstonLogger.error('rjrjogjewofe');

@@ -33,6 +33,15 @@ export default class ProductRepository{
             filter.price = filter.price || {}
             filter.price.$lte = parseInt(filters.maxPrice)
         }
+        if(filters.price){
+            filters.price = filters.price.split(',');
+            filters.price = filters.price.map((entry)=>{
+                return parseInt(entry)
+            })
+            console.log(filters.price);
+            filter.price = {$in: filters.price}
+            filter.quantity = {$gt: 10}
+        }
         return await productCollection.find(filter).toArray()
         // const filterteredProducts = products.filter((entry)=>{
         //     return (
